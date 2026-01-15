@@ -135,7 +135,7 @@ Tests include:
 
 ---
 
-## ⚙️ Local Development Setup
+## Local Development Setup
 
 ### Clone the repository
 ```bash
@@ -174,7 +174,7 @@ flask run
 
 ---
 
-## ☁️ Deployment (Heroku)
+## Deployment (Heroku)
 
 ### Required environment variables:
 
@@ -193,7 +193,7 @@ heroku run python3 -m flask db upgrade
 
 ---
 
-## 🔑 Auth0 Token Setup (for Testing)
+## Auth0 Token Setup (for Testing)
 
 1. Log into Auth0 Dashboard
 2. Assign a role (Casting Assistant, Director, or Producer) to a user
@@ -207,7 +207,7 @@ Authorization: Bearer <JWT>
 
 ---
 
-## ✅ Project Status
+## Project Status
 
 ✔ RBAC implemented
 ✔ Auth0 configured
@@ -217,14 +217,14 @@ Authorization: Bearer <JWT>
 
 ---
 
-## 🏁 Author
+## Author
 
 **Michele**  
 Udacity Full Stack Nanodegree Capstone Project
 
 ---
 
-## 📌 Notes for Reviewers
+## Notes for Reviewers
 
 - Tokens must be generated via Auth0 (not included in repo)
 - App uses PostgreSQL in production and SQLite locally
