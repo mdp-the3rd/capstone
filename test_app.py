@@ -20,7 +20,6 @@ class CastingAgencyTestCase(unittest.TestCase):
 
         self.database_path = database_path
 
-        setup_db(self.app, self.database_path)
         with self.app.app_context():
             db.create_all()
         self.assertIsNotNone(casting_assistant_token)
