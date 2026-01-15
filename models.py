@@ -3,18 +3,23 @@ from sqlalchemy import Column, String, create_engine
 from flask_sqlalchemy import SQLAlchemy
 import json
 
-database_path = os.environ['DATABASE_URL']
-if database_path.startswith("postgres://"):
-  database_path = database_path.replace("postgres://", "postgresql://", 1)
-
 db = SQLAlchemy()
 
 '''
 setup_db(app)
     binds a flask application and a SQLAlchemy service
 '''
-def setup_db(app, database_path=database_path):
-    app.config["SQLALCHEMY_DATABASE_URI"] = database_path
+def setup_db(app, database_path=None):
+    if database_path:
+        app.config["SQLALCHEMY_DATABASE_URI"] = database_path
+    else:
+        database_url = os.environ.get('DATABASE_URL')
+        if database_url and database_url.startswith("postgres://"):
+            database_url = database_url.replace(
+                "postgres://", "postgresql://", 1
+            )
+        app.config["SQLALCHEMY_DATABASE_URI"] = database_url
+
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.init_app(app)
 

@@ -6,12 +6,14 @@ from flask import Flask, request, abort, jsonify
 from flask_cors import CORS
 from auth import requires_auth, AuthError
 
+migrate = Migrate()
+
 
 def create_app(test_config=None):
 
     app = Flask(__name__)
-    #setup_db(app)
-    migrate = Migrate(app, db) 
+    setup_db(app)
+    migrate.init_app(app, db) 
     CORS(app)
 
     @app.route('/')
