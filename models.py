@@ -19,7 +19,10 @@ def setup_db(app, database_path=database_path):
     db.init_app(app)
 
 
-
+'''
+Person
+Have title and release year
+'''
 class Actor(db.Model):
     __tablename__ = 'actors'
 
@@ -45,5 +48,31 @@ class Actor(db.Model):
             "name": self.name,
             "age": self.age,
             "gender": self.gender
+        }
+
+  
+class Movie(db.Model):
+    __tablename__ = 'movies'
+
+    id = Column(db.Integer, primary_key=True)
+    title = Column(String, nullable=False)
+    release_date = Column(String)
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def format(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "release_date": self.release_date
         }
 

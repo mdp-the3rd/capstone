@@ -10,12 +10,22 @@ casting_assistant_token = os.environ.get('CASTING_ASSISTANT_TOKEN')
 casting_director_token = os.environ.get('CASTING_DIRECTOR_TOKEN')
 executive_producer_token = os.environ.get('EXECUTIVE_PRODUCER_TOKEN')
 
+database_path = 'sqlite:///:memory:'
 
 class CastingAgencyTestCase(unittest.TestCase):
     def setUp(self):
+        
         self.app = create_app()
         self.client = self.app.test_client
+
+        self.database_path = database_path
+
         setup_db(self.app, self.database_path)
+        with self.app.app_context():
+            db.create_all()
+        self.assertIsNotNone(casting_assistant_token)
+        self.assertIsNotNone(casting_director_token)
+        self.assertIsNotNone(executive_producer_token)
 
         self.new_actor = {
             "name": "Test Actor",
@@ -52,6 +62,7 @@ class CastingAgencyTestCase(unittest.TestCase):
             self.assertTrue(data['success'])
             
     def test_delete_movie_success(self):
+        with self.app.app_context():    
             movie = Movie(title="Temp", release_date="2024")
             movie.insert()
             res = self.client().delete(f'/movies/{movie.id}',headers=self.headers_producer)
@@ -64,6 +75,7 @@ class CastingAgencyTestCase(unittest.TestCase):
             self.assertEqual(res.status_code, 403)
             
     def test_director_cannot_delete_movie(self):
+        with self.app.app_context():
             movie = Movie(title="Protected", release_date="2024")
             movie.insert()
             res = self.client().delete(f'/movies/{movie.id}',headers=self.headers_director)
@@ -77,4 +89,11 @@ class CastingAgencyTestCase(unittest.TestCase):
             res = self.client().delete('/actors/99999',headers=self.headers_producer)
             self.assertEqual(res.status_code, 404)
 
+    def tearDown(self):
+        with self.app.app_context():
+              db.session.remove()
+              db.drop_all()
+
+if __name__ == '__main__':
+    unittest.main()
 
