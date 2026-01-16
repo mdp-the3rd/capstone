@@ -12,7 +12,11 @@ migrate = Migrate()
 def create_app(test_config=None):
 
     app = Flask(__name__)
-    setup_db(app)
+    if test_config:
+        app.config.update(test_config)
+        setup_db(app, test_config.get('SQLALCHEMY_DATABASE_URI'))
+    else:
+        setup_db(app)
     migrate.init_app(app, db) 
     CORS(app)
 
