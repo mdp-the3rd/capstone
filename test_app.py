@@ -3,22 +3,18 @@ import unittest
 import json
 
 from app import create_app
-from models import setup_db, Actor, Movie, db
+from models import Actor, Movie, db
 
 
 casting_assistant_token = os.environ.get('CASTING_ASSISTANT_TOKEN')
 casting_director_token = os.environ.get('CASTING_DIRECTOR_TOKEN')
 executive_producer_token = os.environ.get('EXECUTIVE_PRODUCER_TOKEN')
 
-database_path = 'sqlite:///:memory:'
-
 class CastingAgencyTestCase(unittest.TestCase):
     def setUp(self):
-        
+        os.environ['DATABASE_URL'] = 'sqlite:///:memory:'
         self.app = create_app()
         self.client = self.app.test_client
-
-        self.database_path = database_path
 
         with self.app.app_context():
             db.create_all()
